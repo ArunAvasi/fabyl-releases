@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fabyl for Mac</title>
+<meta name="description" content="Download the signed, notarized Fabyl app for Mac.">
+<!-- The repository whose releases this page lists. On GitHub Pages it is worked out from the address
+     (owner.github.io/repo); this is the fallback for anywhere else. -->
+<meta name="fabyl:releases-repo" content="ArunAvasi/fabyl-releases">
+<link rel="icon" href="icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one narrow column, the way a Mac app's About box reads; the latest build first, its history below. */
+:root {
+    --bg: #080808;
+    --surface: #121110;
+    --line: #262320;
+    --fg: #f5f5f5;
+    --muted: #a39d94;
+    --accent: #d5af7f;
+    --on-accent: #1a140c;
+    --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) { --bg: #faf8f5; --surface: #ffffff; --line: #e7e1d8; --fg: #16130f; --muted: #6b645a; --accent: #8a6232; --on-accent: #ffffff; color-scheme: light; }
+}
+:root[data-theme="light"] { --bg: #faf8f5; --surface: #ffffff; --line: #e7e1d8; --fg: #16130f; --muted: #6b645a; --accent: #8a6232; --on-accent: #ffffff; color-scheme: light; }
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font: 400 16px/1.6 var(--font-sans);
+    padding-block: max(48px, env(safe-area-inset-top, 0px)) max(48px, env(safe-area-inset-bottom, 0px));
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+main { max-width: 640px; margin: 0 auto; display: grid; gap: 48px; }
+a { color: var(--accent); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+h1, h2, h3 { line-height: 1.2; text-wrap: balance; margin: 0; }
+
+header { display: flex; gap: 20px; align-items: center; }
+header img { width: 72px; height: 72px; border-radius: 18px; flex: none; }
+header h1 { font-size: 2rem; font-weight: 800; letter-spacing: -0.02em; }
+header p { margin: 4px 0 0; color: var(--muted); }
+
+.latest { display: grid; gap: 20px; }
+.eyebrow { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.version { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 14px; }
+.version h2 { font-size: 1.5rem; font-weight: 700; font-family: var(--font-mono); letter-spacing: -0.01em; }
+.version time { color: var(--muted); font-size: 0.9375rem; }
+.download { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; }
+.button {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--accent); color: var(--on-accent);
+    font-weight: 700; font-size: 1rem; text-decoration: none;
+    padding: 14px 22px; border-radius: 12px;
+    transition: transform 120ms ease, filter 120ms ease;
+}
+.button:hover { filter: brightness(1.06); transform: translateY(-1px); }
+.button svg { width: 18px; height: 18px; }
+.meta { color: var(--muted); font-size: 0.875rem; font-variant-numeric: tabular-nums; }
+.meta code { font-family: var(--font-mono); font-size: 0.8125rem; }
+
+.notes { min-width: 0; overflow-wrap: anywhere; }
+.notes h2, .notes h3 { font-size: 1rem; font-weight: 700; margin: 20px 0 8px; }
+.notes h2:first-child, .notes h3:first-child { margin-top: 0; }
+.notes ul { margin: 0; padding-left: 1.25em; display: grid; gap: 4px; }
+.notes p { margin: 8px 0; }
+.notes sub { color: var(--muted); font-size: 0.8125rem; vertical-align: baseline; font-family: var(--font-mono); }
+.notes code { font-family: var(--font-mono); font-size: 0.875em; }
+
+.steps { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px; display: grid; gap: 10px; }
+.steps h2 { font-size: 1rem; font-weight: 700; }
+.steps ol { margin: 0; padding-left: 1.25em; display: grid; gap: 6px; }
+.steps p { margin: 0; color: var(--muted); font-size: 0.9375rem; }
+
+.history { display: grid; gap: 4px; }
+.history > h2 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
+.history details { border-top: 1px solid var(--line); }
+.history details:last-child { border-bottom: 1px solid var(--line); }
+.history summary { cursor: pointer; list-style: none; display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: baseline; padding: 14px 2px; }
+.history summary::-webkit-details-marker { display: none; }
+.history summary::before { content: "›"; color: var(--muted); width: 0.75em; transition: transform 120ms ease; }
+.history details[open] summary::before { transform: rotate(90deg); }
+.history summary strong { font-family: var(--font-mono); font-weight: 500; }
+.history summary time { color: var(--muted); font-size: 0.875rem; }
+.history .body { padding: 0 2px 18px 1.25em; display: grid; gap: 12px; }
+
+.state { color: var(--muted); }
+footer { color: var(--muted); font-size: 0.8125rem; display: grid; gap: 6px; border-top: 1px solid var(--line); padding-top: 20px; }
+footer p { margin: 0; }
+
+@media (max-width: 480px) {
+    header img { width: 56px; height: 56px; border-radius: 14px; }
+    header h1 { font-size: 1.625rem; }
+    .button { width: 100%; justify-content: center; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<main>
+    <header>
+        <img src="icon.png" alt="" width="72" height="72">
+        <div>
+            <h1>Fabyl for Mac</h1>
+            <p>Streams play natively through VLC, with every audio format.</p>
+        </div>
+    </header>
+
+    <section class="latest" id="latest" aria-live="polite">
+        <span class="eyebrow">Latest release</span>
+        <p class="state" id="status">Loading releases…</p>
+    </section>
+
+    <section class="steps">
+        <h2>Installing</h2>
+        <ol>
+            <li>Open the downloaded <code>.dmg</code>.</li>
+            <li>Drag <strong>Fabyl</strong> into Applications.</li>
+            <li>Open it from Applications. It's signed and notarized, so macOS opens it without a warning.</li>
+        </ol>
+        <p>To update, download the newest release and replace the app the same way. iPhone, iPad and Apple TV builds are invite-only through TestFlight; ask whoever shared Fabyl with you.</p>
+    </section>
+
+    <section class="history" id="history" hidden>
+        <h2>Earlier releases</h2>
+    </section>
+
+    <footer>
+        <p>Fabyl is based on <a href="https://github.com/Stremio/stremio-web">Stremio Web</a> and released under the GPL-2.0 license. It isn't affiliated with or endorsed by Stremio.</p>
+        <p id="all-releases"></p>
+    </footer>
+</main>
+
+<template id="download-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="m7 11 5 5 5-5"/><path d="M5 20h14"/></svg></template>
+
+<script>
+(() => {
+    const fallback = document.querySelector('meta[name="fabyl:releases-repo"]').content;
+    const fromPages = () => {
+        const m = location.hostname.match(/^([^.]+)\.github\.io$/i);
+        const name = location.pathname.split('/').filter(Boolean)[0];
+        return m && name ? `${m[1]}/${name}` : null;
+    };
+    const repo = fromPages() || fallback;
+    const releasesUrl = `https://github.com/${repo}/releases`;
+    document.getElementById('all-releases').innerHTML = `Every build, with checksums: <a href="${releasesUrl}">github.com/${repo}/releases</a>`;
+
+    const el = (tag, props = {}, ...children) => {
+        const node = Object.assign(document.createElement(tag), props);
+        for (const c of children) if (c != null) node.append(c);
+        return node;
+    };
+    const date = (iso) => el('time', { dateTime: iso, textContent: new Date(iso).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }) });
+    const size = (bytes) => `${(bytes / 1024 / 1024).toFixed(0)} MB`;
+    const archOf = (name) => (/-x64\.dmg$/.test(name) ? 'Intel' : /-universal\.dmg$/.test(name) ? 'Apple silicon and Intel' : 'Apple silicon');
+    const dmgs = (r) => r.assets.filter((a) => a.name.endsWith('.dmg'));
+    // GitHub sanitizes body_html; it is the release notes as GitHub itself shows them.
+    const notes = (r) => { const d = el('div', { className: 'notes' }); d.innerHTML = r.body_html || ''; d.querySelectorAll('h2').forEach((h) => { if (/^Install$/i.test(h.textContent.trim())) { while (h.nextSibling && h.nextSibling.tagName !== 'H2') h.nextSibling.remove(); h.remove(); } }); return d; };
+    const button = (a) => {
+        const b = el('a', { className: 'button', href: a.browser_download_url });
+        b.append(document.getElementById('download-icon').content.cloneNode(true), `Download for ${archOf(a.name)}`);
+        return b;
+    };
+
+    const latest = document.getElementById('latest');
+    const status = document.getElementById('status');
+    const fail = (message) => { status.innerHTML = `${message} The builds are also listed at <a href="${releasesUrl}">github.com/${repo}/releases</a>.`; };
+
+    fetch(`https://api.github.com/repos/${repo}/releases?per_page=30`, { headers: { Accept: 'application/vnd.github.html+json' } })
+        .then((r) => {
+            if (r.status === 403 || r.status === 429) throw new Error('GitHub is limiting requests from this network for a few minutes.');
+            if (!r.ok) throw new Error(`GitHub answered ${r.status}.`);
+            return r.json();
+        })
+        .then((all) => {
+            const releases = all.filter((r) => !r.draft && !r.prerelease && dmgs(r).length);
+            if (!releases.length) { status.textContent = 'No release yet. The first signed build will appear here.'; return; }
+            const [first, ...rest] = releases;
+            status.remove();
+            latest.append(
+                el('div', { className: 'version' }, el('h2', { textContent: first.tag_name }), date(first.published_at)),
+                el('div', { className: 'download' }, ...dmgs(first).map(button),
+                    el('span', { className: 'meta', textContent: dmgs(first).map((a) => `${a.name} · ${size(a.size)}`).join('  ·  ') })),
+                notes(first),
+            );
+            if (rest.length) {
+                const history = document.getElementById('history');
+                for (const r of rest) {
+                    history.append(el('details', {},
+                        el('summary', {}, el('strong', { textContent: r.tag_name }), date(r.published_at)),
+                        el('div', { className: 'body' }, notes(r), el('p', { className: 'meta' }, ...dmgs(r).flatMap((a, i) => [i ? ' · ' : '', el('a', { href: a.browser_download_url, textContent: a.name }), ` (${size(a.size)})`])))));
+                }
+                history.hidden = false;
+            }
+        })
+        .catch((e) => fail(`Couldn't load the releases. ${e.message}`));
+})();
+</script>
+</body>
+</html>
